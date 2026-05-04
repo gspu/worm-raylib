@@ -2,6 +2,8 @@
 
 A classic worm/snake game implemented in Zig using raylib, featuring an autoplay mode with BFS pathfinding.
 
+![screen0](https://github.com/gspu/worm-raylib/blob/main/screen0.png)
+
 ## Prerequisites (FreeBSD)
 
 Install the required dependencies using pkg:
