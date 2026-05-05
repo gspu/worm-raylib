@@ -114,7 +114,7 @@ pub fn main() !void {
     const allocator = arena.allocator();
 
     // Initialize Window
-    ray.InitWindow(@intCast(SCREEN_WIDTH), @intCast(SCREEN_HEIGHT), "Zig Worm Game - Optimized & Autoplay");
+    ray.InitWindow(@intCast(SCREEN_WIDTH), @intCast(SCREEN_HEIGHT), "Zig Worm Game");
     defer ray.CloseWindow();
     ray.SetTargetFPS(60);
 
