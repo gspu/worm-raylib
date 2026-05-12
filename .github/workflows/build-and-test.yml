@@ -15,9 +15,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo add-apt-repository universe
+          # Install dependencies for building raylib and the game
           sudo apt-get update
-          sudo apt-get install -y libraylib-dev libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev xvfb
+          sudo apt-get install -y cmake libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev xvfb git
+          # Build and install raylib from source
+          git clone https://github.com/raysan5/raylib.git
+          cd raylib
+          mkdir build && cd build
+          cmake .. -DBUILD_SHARED_LIBS=ON
+          make -j4
+          sudo make install
+          cd ../..
           # Install Zig from official tarball (matching local version)
           ZIG_VERSION=0.15.2
           wget https://ziglang.org/download/$ZIG_VERSION/zig-linux-x86_64-$ZIG_VERSION.tar.xz
