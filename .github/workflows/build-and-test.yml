@@ -39,11 +39,11 @@ jobs:
           sudo make install
           cd ../..
           # Install Zig from official tarball (matching local version)
-          ZIG_VERSION=0.15.2
-          wget https://ziglang.org/download/$ZIG_VERSION/zig-linux-x86_64-$ZIG_VERSION.tar.xz
-          tar -xf zig-linux-x86_64-$ZIG_VERSION.tar.xz
-          sudo mv zig-linux-x86_64-$ZIG_VERSION/zig /usr/local/bin/
-          sudo mv zig-linux-x86_64-$ZIG_VERSION/lib/* /usr/local/lib/
+          ZIG_VERSION=0.15.2           
+          wget https://ziglang.org/download/$ZIG_VERSION/zig-x86_64-linux-$ZIG_VERSION.tar.xz
+          tar -xf zig-x86_64-linux-$ZIG_VERSION.tar.xz
+          sudo mv zig-x86_64-linux-$ZIG_VERSION/zig /usr/local/bin/
+          sudo mv zig-x86_64-linux-$ZIG_VERSION/lib/* /usr/local/lib/
           zig version
 
       - name: Build
