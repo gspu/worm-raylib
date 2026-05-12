@@ -1,0 +1,34 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zig libraylib-dev libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libcursor-dev xvfb
+
+      - name: Build
+        run: zig build -Doptimize=ReleaseFast
+
+      - name: Test (run for 5 seconds)
+        run: |
+          set +e
+          timeout 5 xvfb-run -a -- sudo -u runner -H ./zig-out/bin/worm-game
+          exit_code=$?
+          set -e
+          if [ $exit_code -ne 0 ] && [ $exit_code -ne 124 ]; then
+              echo "Game exited with unexpected code: $exit_code"
+              exit 1
+          fi
+          
