@@ -15,16 +15,27 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo add-apt-repository universe
           sudo apt-get update
-          sudo apt-get install -y zig libraylib-dev libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libcursor-dev xvfb
+          sudo apt-get install -y libraylib-dev libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev xvfb
+          # Install Zig from official tarball (matching local version)
+          ZIG_VERSION=0.15.2
+          wget https://ziglang.org/download/$ZIG_VERSION/zig-linux-x86_64-$ZIG_VERSION.tar.xz
+          tar -xf zig-linux-x86_64-$ZIG_VERSION.tar.xz
+          sudo mv zig-linux-x86_64-$ZIG_VERSION/zig /usr/local/bin/
+          sudo mv zig-linux-x86_64-$ZIG_VERSION/lib/* /usr/local/lib/
+          zig version
 
       - name: Build
         run: zig build -Doptimize=ReleaseFast
 
+      - name: Verify build
+        run: ls -la zig-out/bin/
+
       - name: Test (run for 5 seconds)
         run: |
           set +e
-          timeout 5 xvfb-run -a -- sudo -u runner -H ./zig-out/bin/worm-game
+          timeout 5 xvfb-run -a ./zig-out/bin/worm-game
           exit_code=$?
           set -e
           if [ $exit_code -ne 0 ] && [ $exit_code -ne 124 ]; then
