@@ -3,6 +3,10 @@ const std = @import("std");
 const ray = @cImport({
     @cInclude("raylib.h");
 });
+// Import C time for seeding
+const c_time = @cImport({
+    @cInclude("time.h");
+});
 
 const GRID_SIZE: i32 = 20;
 const SCREEN_WIDTH: i32 = 800;
@@ -151,7 +155,8 @@ pub fn main() !void {
     var next_direction = direction;
 
     var food = Vec2i{ .x = 5, .y = 5 };
-    const seed: u64 = 0xdeadbeef;
+    // Use C time function for seeding - gives us actual random seed based on current time
+    const seed: u64 = @intCast(c_time.time(null));
     var prng = std.Random.DefaultPrng.init(seed);
     const random = prng.random();
 
