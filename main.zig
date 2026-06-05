@@ -151,7 +151,7 @@ pub fn main() !void {
     var next_direction = direction;
 
     var food = Vec2i{ .x = 5, .y = 5 };
-    const seed: u64 = @intCast(std.time.milliTimestamp());
+    const seed: u64 = 0xdeadbeef;
     var prng = std.Random.DefaultPrng.init(seed);
     const random = prng.random();
 

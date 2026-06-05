@@ -13,17 +13,19 @@ pub fn build(b: *std.Build) void {
         }),
     });
 
-    // Link raylib and system libraries
-    exe.linkSystemLibrary("raylib");
-    exe.linkSystemLibrary("m");
-    exe.linkSystemLibrary("pthread");
-    exe.linkSystemLibrary("dl");
-    exe.linkSystemLibrary("rt");
-    exe.linkLibC();
+    // Link raylib and system libraries through the root module
+    exe.root_module.linkSystemLibrary("raylib", .{});
+    exe.root_module.linkSystemLibrary("m", .{});
+    exe.root_module.linkSystemLibrary("pthread", .{});
+    exe.root_module.linkSystemLibrary("dl", .{});
+    exe.root_module.linkSystemLibrary("rt", .{});
+
+    // Link C library
+    exe.root_module.link_libc = true;
 
     // FreeBSD specific paths for raylib
-    exe.addIncludePath(.{ .cwd_relative = "/usr/local/include" });
-    exe.addLibraryPath(.{ .cwd_relative = "/usr/local/lib" });
+    exe.root_module.addIncludePath(.{ .cwd_relative = "/usr/local/include" });
+    exe.root_module.addLibraryPath(.{ .cwd_relative = "/usr/local/lib" });
 
     b.installArtifact(exe);
 
